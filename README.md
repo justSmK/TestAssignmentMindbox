@@ -1,0 +1,2 @@
+# TestAssignmentMindbox
+TestAssignment to Mindbox
