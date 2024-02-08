@@ -12,14 +12,14 @@ final class CircleTests: XCTestCase {
 
     var circle: CircleProtocol!
     
-    override func setUp() {
-        super.setUp()
-        circle = Circle(radius: 10)
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        circle = try Circle(radius: 10)
     }
     
-    override func tearDown() {
+    override func tearDownWithError() throws {
         circle = nil
-        super.tearDown()
+        try super.tearDownWithError()
     }
     
     func testCircleArea() {
@@ -41,17 +41,28 @@ final class CircleTests: XCTestCase {
     }
     
     func testZeroRadiusCircleArea() {
-        circle = Circle(radius: 0)
-        let expectation: Double = 0
-        let radius = circle.radius
-        let area = circle.area
-        XCTAssertEqual(radius, expectation, "Радиус не соотвествует ожидаемому")
-        XCTAssertEqual(area, expectation, "Площадь не соответсвуте ождиаемому")
+        do {
+            circle = try Circle(radius: 0)
+            let expectation: Double = 0
+            let radius = circle.radius
+            let area = circle.area
+            XCTAssertEqual(radius, expectation, "Радиус не соотвествует ожидаемому")
+            XCTAssertEqual(area, expectation, "Площадь не соотвествует ожидаемому")
+        } catch {
+            XCTFail("Инициализация Circle не должна была вызвать ошибку")
+        }
     }
     
     func testNegativeRadiusCircleArea() {
-        let negativeRadiusCircle = Circle(radius: -10)
-        XCTAssertNil(negativeRadiusCircle, "Круг с отрицательным радиусом не должен существовать")
+        XCTAssertThrowsError(try Circle(radius: -10)) { error in
+            guard let circleError = error as? CircleError else {
+                return XCTFail("Ожидалась ошибка CircleError")
+            }
+            
+            if case .invalidRadius(let radius) = circleError {
+                XCTAssertEqual(radius, -10, "Некорректное значение радиуса в ошибке")
+            }
+        }
     }
 
     func testCircleChangeRadiusPositive() {

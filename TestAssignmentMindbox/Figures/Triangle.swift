@@ -13,11 +13,12 @@ public struct Triangle: TriangleProtocol {
     public private(set) var sideB: Double
     public private(set) var sideC: Double
     
-    public init?(sideA: Double, sideB: Double, sideC: Double) {
+    public init(sideA: Double, sideB: Double, sideC: Double) throws {
         guard sideA + sideB > sideC, sideA + sideC > sideB, sideB + sideC > sideA else {
             Logger.triangle.error("Failed to create Triangle instance: The triangle cannot exist")
-            return nil
+            throw TriangleError.invalidTriangle
         }
+        
         self.sideA = sideA
         self.sideB = sideB
         self.sideC = sideC
@@ -35,6 +36,12 @@ public struct Triangle: TriangleProtocol {
         // Проверка теоремы Пифагора с небольшой погрешностью для учета ошибок округления
         return abs(sides[2] * sides[2] - (sides[0] * sides[0] + sides[1] * sides[1])) < 0.000001
     }
+}
+
+// MARK: - Public Error
+
+public enum TriangleError: Error {
+    case invalidTriangle
 }
 
 // MARK: - FormattableAreaProtocol

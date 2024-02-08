@@ -12,7 +12,7 @@ public protocol TriangleProtocol: ShapeProtocol, FormattableAreaProtocol {
     var sideB: Double { get }
     var sideC: Double { get }
     
-    init?(sideA: Double, sideB: Double, sideC: Double)
+    init(sideA: Double, sideB: Double, sideC: Double) throws
     
     var isRightAngled: Bool { get }
 }

@@ -10,7 +10,7 @@ import Foundation
 public protocol CircleProtocol: ShapeProtocol, FormattableAreaProtocol {
     var radius: Double { get }
     
-    init?(radius: Double)
+    init(radius: Double) throws
     
     mutating func changeRadius(new value: Double)
 }

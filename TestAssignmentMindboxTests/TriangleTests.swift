@@ -12,14 +12,14 @@ final class TriangleTests: XCTestCase {
 
     var triangle: TriangleProtocol!
     
-    override func setUp() {
-        super.setUp()
-        triangle = Triangle(sideA: 10, sideB: 10, sideC: 10)
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        triangle = try Triangle(sideA: 10, sideB: 10, sideC: 10)
     }
     
-    override func tearDown() {
+    override func tearDownWithError() throws {
         triangle = nil
-        super.tearDown()
+        try super.tearDownWithError()
     }
 
     func testTriangleArea() {
@@ -42,13 +42,20 @@ final class TriangleTests: XCTestCase {
     }
     
     func testNonExistenceTriangle() {
-        let nonExistentTriangle = Triangle(sideA: 1, sideB: 1, sideC: 10)
-        XCTAssertNil(nonExistentTriangle, "Треугольника с такими параметрами не может существовать")
+        XCTAssertThrowsError(try Triangle(sideA: 1, sideB: 1, sideC: 10)) { error in
+            guard let triangleError = error as? TriangleError else {
+                return XCTFail("Ожидалась ошибка TriangleError")
+            }
+        }
     }
     
-    func testTriangle() {
-        triangle = Triangle(sideA: 3, sideB: 4, sideC: 5)
-        let rightAngled = triangle.isRightAngled
-        XCTAssertTrue(rightAngled, "Треугольник должен быть прямоугольным")
+    func testRightAngledTriangle() {
+        do {
+            triangle = try Triangle(sideA: 3, sideB: 4, sideC: 5)
+            let rightAngled = triangle.isRightAngled
+            XCTAssertTrue(rightAngled, "Треугольник должен быть прямоугольным")
+        } catch {
+            XCTFail("Инициализация Triangle не должна была вызвать ошибку")
+        }
     }
 }

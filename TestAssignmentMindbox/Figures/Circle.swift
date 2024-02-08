@@ -20,10 +20,10 @@ public struct Circle: CircleProtocol {
         }
     }
     
-    public init?(radius: Double) {
+    public init(radius: Double) throws {
         guard !radius.isLess(than: 0) else {
             Logger.circle.error("Failed to create Circle instance: negative radius value.")
-            return nil
+            throw CircleError.invalidRadius(radius)
         }
         self.radius = radius
     }
@@ -35,6 +35,12 @@ public struct Circle: CircleProtocol {
     public var area: Double {
         Double.pi * radius * radius
     }
+}
+
+// MARK: - Public Error
+
+public enum CircleError: Error {
+    case invalidRadius(Double)
 }
 
 // MARK: - FormattableAreaProtocol
