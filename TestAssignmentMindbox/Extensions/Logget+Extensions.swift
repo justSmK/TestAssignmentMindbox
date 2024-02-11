@@ -9,9 +9,13 @@ import Foundation
 import OSLog
 
 extension Logger {
-    /// Using your bundle identifier is a great way to ensure a unique identifier.
+    /// Идентификатор подсистемы для логгирования, использующий идентификатор пакета приложения.
+    /// Использование идентификатора пакета приложения гарантирует уникальность идентификатора подсистемы
     private static var subsystem = Bundle.main.bundleIdentifier!
-
-    static let circle = Logger(subsystem: subsystem, category: "circle")    
+    
+    /// Логгер для круга
+    static let circle = Logger(subsystem: subsystem, category: "circle")
+    
+    /// Логгер для треугольника
     static let triangle = Logger(subsystem: subsystem, category: "triangle")
 }

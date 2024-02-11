@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// Протокол для геометрической фигуры
 public protocol ShapeProtocol {
+    /// Площадь фигуры
     var area: Double { get }
 }

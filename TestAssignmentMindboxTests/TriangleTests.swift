@@ -46,6 +46,13 @@ final class TriangleTests: XCTestCase {
             guard let triangleError = error as? TriangleError else {
                 return XCTFail("Ожидалась ошибка TriangleError")
             }
+            
+            switch triangleError {
+            case .invalidTriangle(let sideA, let sideB, let sideC):
+                XCTAssertEqual(sideA, 1, "Неверное значение для sideA")
+                XCTAssertEqual(sideB, 1, "Неверное значение для sideB")
+                XCTAssertEqual(sideC, 10, "Неверное значение для sideC")
+            }
         }
     }
     
